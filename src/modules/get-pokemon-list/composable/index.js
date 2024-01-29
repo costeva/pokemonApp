@@ -1,0 +1,55 @@
+import { computed, ref } from "vue";
+import { usePokemonStore } from "../../store/index.js";
+import { useLoader } from "../../../components/loader/composable.js";
+
+export const useGetPokemons = () => {
+  const store = usePokemonStore();
+  const { isLoading, startLoader, stopLoader } = useLoader();
+  const favoritePokemon = ref([]);
+  const pokemons = computed(() => store.getNames);
+  const pokemon = computed(() => store.getPokemon);
+  const searchTerm = ref("");
+
+  const getPokemonsList = async () => {
+    try {
+      startLoader();
+      await store.pokemonsList();
+    } catch (error) {
+      console.error("Error al cargar los pokemons:", error);
+      startLoader();
+    } finally {
+      stopLoader();
+    }
+  };
+
+  const pokemonDetail = async (name) => {
+    await store.pokemon(name);
+  };
+
+  const toggleFavorite = (pokemonName) => {
+    const index = favoritePokemon.value.indexOf(pokemonName);
+    if (index === -1) {
+      favoritePokemon.value.push(pokemonName);
+    } else {
+      favoritePokemon.value.splice(index, 1);
+    }
+    console.log(favoritePokemon.value, "favoritePokemon.value")
+    store.setFavorites([...favoritePokemon.value])
+  };
+
+  const clearSearch = () => {
+    searchTerm.value = "";
+  };
+
+  return {
+    pokemons,
+    searchTerm,
+    pokemonDetail,
+    getPokemonsList,
+    isLoading,
+    favoritePokemon,
+    toggleFavorite,
+    clearSearch,
+    pokemon,
+  };
+};

@@ -1,0 +1,189 @@
+<template>
+  <div class="modal" v-show="props.showModal" tabindex="-1">
+    <div class="dialog">
+      <div class="content">
+        <div class="header">
+          <div class="card">
+            <div class="close-btn" @click="closeModal">X</div>
+            <img
+              class="pokemon-image"
+              :src="pokemon?.image"
+              alt="Pokemon Image"
+            />
+          </div>
+        </div>
+        <div class="body">
+          <div class="pokemon-details">
+            <div class="details-item">
+              <span>Name:</span> {{ pokemon?.name }}
+            </div>
+            <div class="details-item">
+              <span>Weight:</span> {{ pokemon?.weight }}kg
+            </div>
+            <div class="details-item">
+              <span>Types:</span> {{ pokemon?.types }}
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <div class="bottom-section">
+            <button class="btn button">Share to my friends</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, defineProps, watchEffect, defineEmits } from "vue";
+
+const props = defineProps({
+  pokemon: {
+    type: Object,
+    required: true,
+  },
+  showModal: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["update:showModal"]);
+
+const closeModal = () => {
+  emit("update:showModal", false);
+};
+
+onMounted(() => {
+  watchEffect(() => {
+    console.log(props.showModal, "props.showModal");
+  });
+});
+</script>
+
+<style scoped>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.header {
+  background-image: url("../assets/paisaje.svg");
+  background-size: cover;
+  height: 200px;
+  position: relative;
+}
+
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5); /* Añade transparencia al fondo de la tarjeta */
+}
+
+.pokemon-image {
+  position: relative;
+  max-height: 100%;
+  opacity: 0.8; /* Hace la imagen del Pokémon un poco transparente */
+}
+
+.body{
+  background-color: #f5f5f5;
+}
+
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.detail-label {
+  border-bottom: 1px solid gray;
+}
+
+
+.body {
+  padding: 20px;
+}
+
+.pokemon-details {
+  color: #5e5e5e;
+}
+
+.details-item {
+  margin: 10px 0;
+  border-bottom: 1px solid gray;
+  padding-bottom: 20px;
+
+}
+
+.details-item:last-child {
+  margin-bottom: 0;
+  
+}
+
+.details-item span {
+  font-weight: bold;
+
+}
+
+.footer {
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.bottom-section {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  font-family: Lato;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: center;
+  background-color: red !important;
+  color:white;
+  border-radius: 60px;
+  margin-top: 20px;
+}
+
+
+.close-btn {
+  width: 26px;
+  height: 26px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1; /* Añade un z-index para traer el botón de cerrar al frente */
+}
+
+
+
+</style>
