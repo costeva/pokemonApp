@@ -14,11 +14,13 @@ export const useGetPokemons = () => {
     try {
       startLoader();
       await store.pokemonsList();
+     
     } catch (error) {
       console.error("Error al cargar los pokemons:", error);
       startLoader();
     } finally {
       stopLoader();
+      store.setLoading(true);
     }
   };
 

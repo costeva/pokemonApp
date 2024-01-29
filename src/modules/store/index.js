@@ -15,6 +15,10 @@ export const usePokemonStore = defineStore('pokemon',{
     setDetallePokemon(name) {
       this.item=name
     },
+    setLoading(loading) {
+      console.log(loading,'loading Store')
+      this.loading = loading;
+    },
 
     setFavorites(name) {
       
@@ -32,10 +36,11 @@ export const usePokemonStore = defineStore('pokemon',{
           throw new Error('Error al obtener los datos')
         }
         this.item = response.data
+       
       } catch (error) {
         this.error = error.message
       } finally {
-        this.loading = false
+      
       }
     },
 
@@ -53,7 +58,7 @@ export const usePokemonStore = defineStore('pokemon',{
       } catch (error) {
         this.error = error.message
       } finally {
-        this.loading = false
+        this.loading = true
       }
     },
   },

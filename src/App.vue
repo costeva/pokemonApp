@@ -4,7 +4,7 @@
       <router-view />
     </div>
 
-    <footer v-if="currentRoute !== '/'" class="footer">
+    <footer v-show="currentRoute !== '/' && !(currentRoute === '/list-pokemon' && !loading)" class="footer">
       <button
         class="btn btn-primary footer-btn"
         :style="allButtonStyle"
@@ -25,10 +25,13 @@
 
 <script setup>
 import { inject, ref, computed } from "vue";
-
+import { usePokemonStore } from "./modules/store/index.js";
 const router = inject("router");
-
+const pokemonStore = usePokemonStore();
 const currentRoute = computed(() => router.currentRoute.value.path);
+const loading = computed(() => pokemonStore.loading);
+
+console.log(loading.value, 'VALOR DEL LOADING');
 
 const allButtonStyle = ref({
   width: "150px",
@@ -64,6 +67,8 @@ const goToFavorite = () => {
   align-items: center;
   bottom: 0;
   width: 100%;
+  position: fixed;
+  left: 0;
   height: 80px;
   background-color: #f8f9fa; /* Color de fondo del footer */
 }

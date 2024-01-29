@@ -12,6 +12,7 @@
     :key="index"
     :pokemonName="pokemon"
     @toggle-favorite="toggleFavorite"
+    :isFavorite="favoritePokemon.includes(pokemon)"
     @open-card="handleOpenCard"
   />
   <card-pokemon
@@ -28,7 +29,7 @@ import cardPokemon from "../../../components/cardPokemon.vue";
 import listPokemons from "../../../components/list.vue";
 import { useFavorites } from "../composable/index.js";
 
-const { toggleFavorite, favoritePokemon, searchTerm } = useFavorites();
+const { toggleFavorite, favoritePokemon, searchTerm,pokemonDetail,pokemon } = useFavorites();
 
 const showModal = ref(false);
 const handleOpenCard = (pokemon) => {
