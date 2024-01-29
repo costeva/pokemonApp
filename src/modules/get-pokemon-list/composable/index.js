@@ -35,7 +35,7 @@ export const useGetPokemons = () => {
     } else {
       favoritePokemon.value.splice(index, 1);
     }
-    console.log(favoritePokemon.value, "favoritePokemon.value")
+
     store.setFavorites([...favoritePokemon.value])
   };
 

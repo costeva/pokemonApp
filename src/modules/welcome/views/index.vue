@@ -10,16 +10,16 @@
       The digital encyclopedia created by Professor Oak is an invaluable tool to
       Trainers in the Pokémon world.
     </p>
-    <button class="get-started-button" @click="goTopokemonsList">Get started</button>
+    <button class="get-started-button" @click="goTopokemonsList">
+      Get started
+    </button>
   </div>
 </template>
 
 <script setup>
+import { useWelcome } from "../composable/index.js";
 
-import {useWelcome} from "../composable/index.js";
-
-const {goTopokemonsList} = useWelcome();
-
+const { goTopokemonsList } = useWelcome();
 </script>
 
 <style>
@@ -64,9 +64,8 @@ const {goTopokemonsList} = useWelcome();
   letter-spacing: 0em;
   text-align: center;
   background-color: red !important;
-  color:white;
+  color: white;
   border-radius: 60px;
   margin-top: 20px;
 }
-
 </style>

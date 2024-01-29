@@ -1,6 +1,6 @@
 <template>
   <input type="text" v-model="searchTerm" placeholder="Search..." />
-   <div v-if="filteredPokemons.length === 0">
+  <div v-if="filteredPokemons.length === 0">
     <h2>Uh-oh!</h2>
     <p>You look lost on your journey!</p>
     <button class="btn get-back--home-button" @click="clearSearch">
@@ -20,7 +20,7 @@
     :showModal="showModal"
     :pokemon="pokemon"
     @update:showModal="handleCloseCard"
-  />  
+  />
 </template>
 
 <script setup>
@@ -29,7 +29,8 @@ import cardPokemon from "../../../components/cardPokemon.vue";
 import listPokemons from "../../../components/list.vue";
 import { useFavorites } from "../composable/index.js";
 
-const { toggleFavorite, favoritePokemon, searchTerm,pokemonDetail,pokemon } = useFavorites();
+const { toggleFavorite, favoritePokemon, searchTerm, pokemonDetail, pokemon } =
+  useFavorites();
 
 const showModal = ref(false);
 const handleOpenCard = (pokemon) => {
@@ -40,7 +41,11 @@ const handleOpenCard = (pokemon) => {
 const filteredPokemons = computed(() => {
   const searchTxt = searchTerm.value.toLowerCase();
   if (Array.isArray(favoritePokemon.value)) {
-    return favoritePokemon.value.filter(pokemonName => typeof pokemonName === 'string' && pokemonName.toLowerCase().includes(searchTxt));
+    return favoritePokemon.value.filter(
+      (pokemonName) =>
+        typeof pokemonName === "string" &&
+        pokemonName.toLowerCase().includes(searchTxt)
+    );
   } else {
     return [];
   }

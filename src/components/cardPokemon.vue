@@ -27,7 +27,9 @@
         </div>
         <div class="footer">
           <div class="bottom-section">
-            <button class="btn button">Share to my friends</button>
+            <button @click="sharePk" class="btn button">
+              Share to my friends
+            </button>
           </div>
         </div>
       </div>
@@ -36,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps, watchEffect, defineEmits } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
   pokemon: {
@@ -55,11 +57,13 @@ const closeModal = () => {
   emit("update:showModal", false);
 };
 
-onMounted(() => {
-  watchEffect(() => {
-    console.log(props.showModal, "props.showModal");
-  });
-});
+const sharePk = () => {
+  const types = Array.isArray(props.pokemon.types)
+    ? props.pokemon.types.join(", ")
+    : props.pokemon.types;
+  const pokemonData = `${props.pokemon.name}, ${props.pokemon.weight}kg, ${types}`;
+  navigator.clipboard.writeText(pokemonData);
+};
 </script>
 
 <style scoped>
@@ -83,7 +87,7 @@ onMounted(() => {
 }
 
 .card {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
@@ -91,16 +95,16 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.5); /* Añade transparencia al fondo de la tarjeta */
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .pokemon-image {
   position: relative;
   max-height: 100%;
-  opacity: 0.8; /* Hace la imagen del Pokémon un poco transparente */
+  opacity: 0.8;
 }
 
-.body{
+.body {
   background-color: #f5f5f5;
 }
 
@@ -119,7 +123,6 @@ onMounted(() => {
   border-bottom: 1px solid gray;
 }
 
-
 .body {
   padding: 20px;
 }
@@ -132,17 +135,14 @@ onMounted(() => {
   margin: 10px 0;
   border-bottom: 1px solid gray;
   padding-bottom: 20px;
-
 }
 
 .details-item:last-child {
   margin-bottom: 0;
-  
 }
 
 .details-item span {
   font-weight: bold;
-
 }
 
 .footer {
@@ -163,11 +163,10 @@ onMounted(() => {
   letter-spacing: 0em;
   text-align: center;
   background-color: red !important;
-  color:white;
+  color: white;
   border-radius: 60px;
   margin-top: 20px;
 }
-
 
 .close-btn {
   width: 26px;
@@ -181,9 +180,6 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  z-index: 1; /* Añade un z-index para traer el botón de cerrar al frente */
+  z-index: 1;
 }
-
-
-
 </style>

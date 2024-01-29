@@ -65,12 +65,9 @@ const goToFavorite = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 0;
   width: 100%;
-  position: fixed;
-  left: 0;
   height: 80px;
-  background-color: #f8f9fa; /* Color de fondo del footer */
+  background-color: #f8f9fa; 
 }
 
 .footer-btn {
@@ -79,8 +76,8 @@ const goToFavorite = () => {
   align-items: center;
   font-size: 16px;
   color: white;
-  margin: 0 20px; /* Espacio entre botones */
+  margin: 0 20px; 
 }
 
-/* Agrega estilos específicos para los botones si es necesario */
+
 </style>
