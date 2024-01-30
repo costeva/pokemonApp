@@ -10,14 +10,15 @@
         :style="allButtonStyle"
         @click="goToList"
       >
-        <i class="bi bi-list"></i> ALL
+      <img src="./assets/all_btn.svg" alt="Favorites" class="btn-icon" /> ALL
       </button>
       <button
         class="btn footer-btn"
         :style="favoritesButtonStyle"
         @click="goToFavorite"
       >
-        <i class="bi bi-heart"></i> Favorites
+        <img src="./assets/estrella_btn.svg" alt="Favorites" class="btn-icon" />
+        Favorites
       </button>
     </footer>
   </div>
@@ -30,33 +31,37 @@ const router = inject("router");
 const pokemonStore = usePokemonStore();
 const currentRoute = computed(() => router.currentRoute.value.path);
 const loading = computed(() => pokemonStore.loading);
+const colorBtn = ref('all');
 
 
-
-const allButtonStyle = ref({
+const allButtonStyle =  computed(() =>({
   width: "150px",
   height: "44px",
   padding: "11px 48px",
   borderRadius: "60px",
   gap: "10px",
-  background: "#F22539",
-});
+  background: colorBtn.value === 'all' ? '#F22539' : '#BFBFBF',
+  display: "flex",
+}));
 
-const favoritesButtonStyle = ref({
+const favoritesButtonStyle =  computed(() =>({
   width: "150px",
   height: "44px",
   padding: "11px 48px",
   borderRadius: "60px",
   gap: "10px",
-  background: "#BFBFBF",
-});
+  background: colorBtn.value === 'favorites' ? '#F22539' : '#BFBFBF',
+  display: "flex",
+}));
 
 const goToList = () => {
+  colorBtn.value = 'all';
   router.push("/list-pokemon");
   pokemonStore.setLoading(false);
 };
 
 const goToFavorite = () => {
+  colorBtn.value = 'favorites';
   router.push("/favorite-pokemon");
 };
 </script>
