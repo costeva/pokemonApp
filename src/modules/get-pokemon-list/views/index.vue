@@ -24,7 +24,7 @@
       </div>
     </div>
   </div>
-  <card-pokemon
+  <card-poket
     v-if="showModal"
     :showModal="showModal"
     :pokemon="pokemon"
@@ -37,7 +37,7 @@ import { onMounted, ref, computed } from "vue";
 import { useGetPokemons } from "../composable/index.js";
 import listPokemons from "../../../components/list.vue";
 import loaderPokemon from "../../../components/loader/loader.vue";
-import cardPokemon from "../../../components/cardPokemon.vue";
+import cardPoket from "../../../components/cardPokemon.vue";
 
 const {
   getPokemonsList,
@@ -47,6 +47,7 @@ const {
   clearSearch,
   pokemon,
   pokemons,
+  resetCard,
   pokemonDetail,
 } = useGetPokemons();
 const showModal = ref(false);
@@ -66,6 +67,7 @@ const handleOpenCard = (pokemon) => {
 
 const handleCloseCard = () => {
   showModal.value = false;
+  resetCard();
 };
 
 onMounted(async () => {

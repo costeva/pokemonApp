@@ -31,7 +31,7 @@ const pokemonStore = usePokemonStore();
 const currentRoute = computed(() => router.currentRoute.value.path);
 const loading = computed(() => pokemonStore.loading);
 
-console.log(loading.value, 'VALOR DEL LOADING');
+
 
 const allButtonStyle = ref({
   width: "150px",
@@ -53,6 +53,7 @@ const favoritesButtonStyle = ref({
 
 const goToList = () => {
   router.push("/list-pokemon");
+  pokemonStore.setLoading(false);
 };
 
 const goToFavorite = () => {
@@ -71,6 +72,7 @@ const goToFavorite = () => {
 }
 
 .footer-btn {
+  font-family: Lato;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,6 +80,7 @@ const goToFavorite = () => {
   color: white;
   margin: 0 20px; 
 }
+
 
 
 </style>

@@ -44,6 +44,7 @@ const props = defineProps({
   pokemon: {
     type: Object,
     required: true,
+    default: null,
   },
   showModal: {
     type: Boolean,
@@ -55,6 +56,7 @@ const emit = defineEmits(["update:showModal"]);
 
 const closeModal = () => {
   emit("update:showModal", false);
+
 };
 
 const sharePk = () => {

@@ -1,5 +1,7 @@
 <template>
-  <input type="text" v-model="searchTerm" placeholder="Search..." />
+   <div class="row justify-content-center">
+  <input class="col-12" type="text" v-model="searchTerm" placeholder="Search..." />
+  </div>
   <div v-if="filteredPokemons.length === 0">
     <h2>Uh-oh!</h2>
     <p>You look lost on your journey!</p>

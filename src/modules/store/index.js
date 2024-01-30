@@ -10,6 +10,14 @@ export const usePokemonStore = defineStore("pokemon", {
   }),
 
   actions: {
+    setCleanLading() {
+      this.loading = false;
+    },
+
+    setCleanPokemon() {
+      this.item = [];
+    },
+    
     setDetallePokemon(name) {
       this.item = name;
     },
@@ -55,6 +63,7 @@ export const usePokemonStore = defineStore("pokemon", {
         this.error = error.message;
       } finally {
         this.loading = true;
+      
       }
     },
   },

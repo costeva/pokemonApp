@@ -26,6 +26,11 @@ export const useGetPokemons = () => {
 
   const pokemonDetail = async (name) => {
     await store.pokemon(name);
+   
+  };
+
+  const resetCard = () => {
+    store.setCleanPokemon();
   };
 
   const toggleFavorite = (pokemonName) => {
@@ -51,6 +56,7 @@ export const useGetPokemons = () => {
     isLoading,
     favoritePokemon,
     toggleFavorite,
+    resetCard,
     clearSearch,
     pokemon,
   };
