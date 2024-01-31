@@ -71,7 +71,6 @@ const closeModal = () => {
   )
 
 const favoriteIcon = computed(() => {
-  console.log(props.isFavorite, "props.isFavorite")
   return props.isFavorite ? activeIcon : disabledIcon;
 });
 
