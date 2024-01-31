@@ -17,12 +17,11 @@ export const usePokemonStore = defineStore("pokemon", {
     setCleanPokemon() {
       this.item = [];
     },
-    
+
     setDetallePokemon(name) {
       this.item = name;
     },
     setLoading(loading) {
- 
       this.loading = loading;
     },
 
@@ -34,9 +33,10 @@ export const usePokemonStore = defineStore("pokemon", {
     },
 
     async pokemon(name) {
+      let pokemonName =name.toLowerCase();
       try {
         const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${name}`
+          `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
         );
         if (response.status !== 200) {
           throw new Error("Error al obtener los datos");
@@ -63,17 +63,15 @@ export const usePokemonStore = defineStore("pokemon", {
         this.error = error.message;
       } finally {
         this.loading = true;
-      
       }
     },
   },
   getters: {
     getNames(state) {
-      return state.names;
+      return state?.names.map((name) => name.charAt(0).toUpperCase() + name.slice(1));
     },
 
     getFavorites(state) {
-  
       return state.favorites;
     },
     getPokemon(state) {
@@ -86,8 +84,9 @@ export const usePokemonStore = defineStore("pokemon", {
         ? item.types.map((type) => type?.type?.name).join(", ")
         : "";
 
+      const name = item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : "";
       return {
-        name: item.name,
+        name: name,
         id: item.id,
         image: item.sprites?.other?.["official-artwork"]?.front_default,
         types: types,

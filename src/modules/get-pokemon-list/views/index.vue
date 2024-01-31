@@ -2,9 +2,19 @@
   <div>
     <loader-pokemon :isLoading="isLoading" />
 
-    <div class="row justify-content-center" v-show="!isLoading">
-      <input type="text" v-model="searchTerm" placeholder="Search..." />
-
+    <div class="row justify-content-center px-3" v-show="!isLoading">
+      <div>
+        <div class="input-group col-12">
+          <span class="input-group-text">
+            <i class="fas fa-search"></i>
+          </span>
+          <input
+            v-model="searchTerm"
+            class="form-control input-search"
+            placeholder="Search"
+          />
+        </div>
+      </div>
       <div v-if="filteredPokemons.length === 0">
         <h2>Uh-oh!</h2>
         <p>You look lost on your journey!</p>
@@ -13,7 +23,7 @@
         </button>
       </div>
 
-      <div class="py-2 col-sm-12" v-else>
+      <div class="py-2 col-12" v-else>
         <list-pokemons
           v-for="(pokemon, index) in filteredPokemons"
           :key="index"
@@ -26,6 +36,8 @@
   </div>
   <card-poket
     v-if="showModal"
+    :isLoading="isLoading"
+    :isFavorite="isFavorite"
     :showModal="showModal"
     :pokemon="pokemon"
     @update:showModal="handleCloseCard"
@@ -33,12 +45,13 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, inject } from "vue";
 import { useGetPokemons } from "../composable/index.js";
 import listPokemons from "../../../components/list.vue";
 import loaderPokemon from "../../../components/loader/loader.vue";
 import cardPoket from "../../../components/cardPokemon.vue";
 
+const showFooter = inject("showFooter");
 const {
   getPokemonsList,
   isLoading,
@@ -51,17 +64,20 @@ const {
   pokemonDetail,
 } = useGetPokemons();
 const showModal = ref(false);
+const isFavorite = ref(false);
 
 const filteredPokemons = computed(() => {
   const serchTxt = searchTerm.value.toLowerCase();
   let filterName = pokemons.value.filter((pokemon) => {
     return pokemon.toLowerCase().includes(serchTxt);
   });
+  showFooter.value = filterName.length !== 0;
   return filterName;
 });
 
-const handleOpenCard = (pokemon) => {
-  pokemonDetail(pokemon);
+const handleOpenCard = (data) => {
+  isFavorite.value = data.isFavorite;
+  pokemonDetail(data.pokemon);
   showModal.value = true;
 };
 
@@ -83,7 +99,9 @@ onMounted(async () => {
 .altura {
   height: 80vh;
 }
-
+.fas {
+  color: #bfbfbf;
+}
 .pokeball-loader {
   position: fixed;
   top: 50%;
@@ -102,5 +120,32 @@ onMounted(async () => {
   color: white;
   border-radius: 60px;
   margin-top: 20px;
+}
+
+.input-group{
+  width: 100% !important;
+}
+.input-group-text {
+  background: #ffffff;
+  border-right: #ffffff;
+}
+
+
+.input-search {
+  flex-wrap: nowrap;
+  padding: 14px 127px 14px 15px;
+  border-radius: 5px;
+  border-left: #ffffff;
+}
+@media (min-width: 1024px) {
+.input-group-text {
+  background: #ffffff;
+  border-right: #ffffff;
+}
+.input-search {
+  padding: 14px 219px 14px 15px;
+  border-radius: 5px;
+  border-left: #ffffff;
+}
 }
 </style>

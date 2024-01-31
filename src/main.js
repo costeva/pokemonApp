@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
+import '@fortawesome/fontawesome-free/css/all.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import 'bootstrap'
@@ -27,7 +28,7 @@ const pinia = createPinia()
 
 app.provide('router', router)
 app.use(pinia)
-
+  
 app.use(router)
 
 

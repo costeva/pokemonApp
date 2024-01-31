@@ -3,10 +3,9 @@
     <div class="container">
       <router-view />
     </div>
-
-    <footer v-show="currentRoute !== '/' && !(currentRoute === '/list-pokemon' && !loading)" class="footer">
+    <footer v-show="showFooter && currentRoute !== '/' && !(currentRoute === '/list-pokemon' && !loading)" class="footer">
       <button
-        class="btn btn-primary footer-btn"
+        class="btn  footer-btn"
         :style="allButtonStyle"
         @click="goToList"
       >
@@ -25,8 +24,10 @@
 </template>
 
 <script setup>
-import { inject, ref, computed } from "vue";
+import { inject, ref,provide, computed } from "vue";
 import { usePokemonStore } from "./modules/store/index.js";
+const showFooter = ref(true);
+provide('showFooter', showFooter);
 const router = inject("router");
 const pokemonStore = usePokemonStore();
 const currentRoute = computed(() => router.currentRoute.value.path);
@@ -35,22 +36,26 @@ const colorBtn = ref('all');
 
 
 const allButtonStyle =  computed(() =>({
-  width: "150px",
+  width: window.innerWidth > 1024 ? "275px" : "150px",
+
   height: "44px",
   padding: "11px 48px",
   borderRadius: "60px",
   gap: "10px",
-  background: colorBtn.value === 'all' ? '#F22539' : '#BFBFBF',
+  color: "white",
+  background: currentRoute.value === '/list-pokemon' ? '#F22539' : '#BFBFBF',
   display: "flex",
 }));
 
 const favoritesButtonStyle =  computed(() =>({
-  width: "150px",
+  width: window.innerWidth > 1024 ? "275px" : "150px",
+  
   height: "44px",
   padding: "11px 48px",
   borderRadius: "60px",
   gap: "10px",
-  background: colorBtn.value === 'favorites' ? '#F22539' : '#BFBFBF',
+  color: "white",
+  background: currentRoute.value === '/favorite-pokemon' ? '#F22539' : '#BFBFBF',
   display: "flex",
 }));
 
@@ -85,7 +90,6 @@ const goToFavorite = () => {
   color: white;
   margin: 0 20px; 
 }
-
 
 
 </style>

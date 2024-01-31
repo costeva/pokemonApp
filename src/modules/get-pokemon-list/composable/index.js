@@ -24,10 +24,11 @@ export const useGetPokemons = () => {
     }
   };
 
-  const pokemonDetail = async (name) => {
-    await store.pokemon(name);
-   
+  const pokemonDetail = async (name) => {  
+      await store.pokemon(name);
   };
+   
+
 
   const resetCard = () => {
     store.setCleanPokemon();
