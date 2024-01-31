@@ -10,7 +10,7 @@
       The digital encyclopedia created by Professor Oak is an invaluable tool to
       Trainers in the Pokémon world.
     </p>
-    <button class="get-started-button" @click="goTopokemonsList">
+    <button class="btn get-started-button" @click="goTopokemonsList">
       Get started
     </button>
   </div>
@@ -27,6 +27,10 @@ const { goTopokemonsList } = useWelcome();
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: url('../../../assets/Ellipse.png') no-repeat center center;
+  background-size: 79.4% 40.7%;
+    background-position: 25.4% 28.9%;
+
 }
 
 .welcome-image {
@@ -67,5 +71,13 @@ const { goTopokemonsList } = useWelcome();
   color: white;
   border-radius: 60px;
   margin-top: 20px;
+}
+@media (min-width: 1024px) {
+  .welcome-view {
+ 
+    background-size: 23.4% 39.7%;
+    background-position: 48.4% 38.9%;
+
+}
 }
 </style>
