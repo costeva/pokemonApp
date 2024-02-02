@@ -33,7 +33,7 @@ export const usePokemonStore = defineStore("pokemon", {
     },
 
     async pokemon(name) {
-      let pokemonName =name.toLowerCase();
+      let pokemonName = name.toLowerCase();
       try {
         const response = await axios.get(
           `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
@@ -50,15 +50,19 @@ export const usePokemonStore = defineStore("pokemon", {
 
     async pokemonsList() {
       try {
+        const requests = [];
         for (let i = 1; i <= 151; i++) {
-          const response = await axios.get(
-            `https://pokeapi.co/api/v2/pokemon/${i}`
-          );
+          requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`));
+        }
+
+        const responses = await Promise.all(requests);
+
+        responses.forEach((response) => {
           if (response.status !== 200) {
             throw new Error("Error al obtener los datos");
           }
           this.names.push(response.data.name);
-        }
+        });
       } catch (error) {
         this.error = error.message;
       } finally {
@@ -66,9 +70,12 @@ export const usePokemonStore = defineStore("pokemon", {
       }
     },
   },
+
   getters: {
     getNames(state) {
-      return state?.names.map((name) => name.charAt(0).toUpperCase() + name.slice(1));
+      return state?.names.map(
+        (name) => name.charAt(0).toUpperCase() + name.slice(1)
+      );
     },
 
     getFavorites(state) {
@@ -84,7 +91,9 @@ export const usePokemonStore = defineStore("pokemon", {
         ? item.types.map((type) => type?.type?.name).join(", ")
         : "";
 
-      const name = item?.name ? item.name.charAt(0).toUpperCase() + item.name.slice(1) : "";
+      const name = item?.name
+        ? item.name.charAt(0).toUpperCase() + item.name.slice(1)
+        : "";
       return {
         name: name,
         id: item.id,
