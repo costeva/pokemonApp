@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref } from "vue";
 
 export function useLoader() {
   const isLoading = ref(false);
@@ -8,12 +8,14 @@ export function useLoader() {
   }
 
   function stopLoader() {
-    isLoading.value = false;
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 1000);
   }
 
   return {
     isLoading,
     startLoader,
-    stopLoader
+    stopLoader,
   };
 }

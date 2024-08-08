@@ -1,95 +1,37 @@
+Aquí tienes una versión de tu vista con los elementos no utilizados eliminados:
+vue Copiar código
 <template>
-  <div>
-    <div class="container">
+  <div class="app-container">
+    <loaderPokemon :isLoading="isLoading" />
+    <div class="content">
       <router-view />
     </div>
-    <footer v-show="showFooter && currentRoute !== '/' && !(currentRoute === '/list-pokemon' && !loading)" class="footer">
-      <button
-        class="btn  footer-btn"
-        :style="allButtonStyle"
-        @click="goToList"
-      >
-      <img src="./assets/all_btn.svg" alt="Favorites" class="btn-icon" /> ALL
-      </button>
-      <button
-        class="btn footer-btn"
-        :style="favoritesButtonStyle"
-        @click="goToFavorite"
-      >
-        <img src="./assets/estrella_btn.svg" alt="Favorites" class="btn-icon" />
-        Favorites
-      </button>
-    </footer>
+    <Footer v-if="currentRoute !== '/'" />
   </div>
 </template>
 
 <script setup>
-import { inject, ref,provide, computed } from "vue";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+import Footer from "./components/Footer.vue";
 import { usePokemonStore } from "./modules/store/index.js";
-const showFooter = ref(true);
-provide('showFooter', showFooter);
-const router = inject("router");
-const pokemonStore = usePokemonStore();
+
+const router = useRouter();
 const currentRoute = computed(() => router.currentRoute.value.path);
-const loading = computed(() => pokemonStore.loading);
-const colorBtn = ref('all');
 
-
-const allButtonStyle =  computed(() =>({
-  width: window.innerWidth > 1024 ? "275px" : "150px",
-
-  height: "44px",
-  padding: "11px 48px",
-  borderRadius: "60px",
-  gap: "10px",
-  color: "white",
-  background: currentRoute.value === '/list-pokemon' ? '#F22539' : '#BFBFBF',
-  display: "flex",
-}));
-
-const favoritesButtonStyle =  computed(() =>({
-  width: window.innerWidth > 1024 ? "275px" : "150px",
-  
-  height: "44px",
-  padding: "11px 48px",
-  borderRadius: "60px",
-  gap: "10px",
-  color: "white",
-  background: currentRoute.value === '/favorite-pokemon' ? '#F22539' : '#BFBFBF',
-  display: "flex",
-}));
-
-const goToList = () => {
-  colorBtn.value = 'all';
-  router.push("/list-pokemon");
-  pokemonStore.setLoading(false);
-};
-
-const goToFavorite = () => {
-  colorBtn.value = 'favorites';
-  router.push("/favorite-pokemon");
-};
+const pokemonStore = usePokemonStore();
+const isLoading = computed(() => pokemonStore.loading);
 </script>
 
-<style>
-.footer {
+<style scoped>
+.app-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 80px;
-  background-color: #f8f9fa; 
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.footer-btn {
-  font-family: Lato;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  color: white;
-  margin: 0 20px; 
+.content {
+  flex: 1;
+  padding-bottom: 80px;
 }
-
-
 </style>

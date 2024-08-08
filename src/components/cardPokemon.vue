@@ -28,18 +28,39 @@
             <button @click="sharePk" class="btn button">
               Share to my friends
             </button>
-            <img :src="favoriteIcon" alt="Favorites" class="btn-icon" />
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div
+    class="position-fixed top-0 end-0 p-3 toast-container"
+    style="z-index: 1050"
+  >
+    <div
+      id="liveToast"
+      class="toast hide"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="toast-header">
+        <strong class="me-auto">Pokémon Shared</strong>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="toast-body">Pokémon details copied to clipboard!</div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed, watch } from "vue";
-import activeIcon from "../assets/Active.svg";
-import disabledIcon from "../assets/Disabled.svg";
+import { defineProps, defineEmits, watch } from "vue";
+import { Toast } from "bootstrap";
 
 const props = defineProps({
   pokemon: {
@@ -70,151 +91,15 @@ watch(
   { immediate: true }
 );
 
-const favoriteIcon = computed(() => {
-  return props.isFavorite ? activeIcon : disabledIcon;
-});
-
 const sharePk = () => {
   const types = Array.isArray(props.pokemon.types)
     ? props.pokemon.types.join(", ")
     : props.pokemon.types;
   const pokemonData = `${props.pokemon.name}, ${props.pokemon.weight}kg, ${types}`;
-  navigator.clipboard.writeText(pokemonData);
+  navigator.clipboard.writeText(pokemonData).then(() => {
+    const toastEl = document.getElementById("liveToast");
+    const toast = new Toast(toastEl); // Utiliza Toast directamente
+    toast.show();
+  });
 };
 </script>
-
-<style scoped>
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.header {
-  border-radius: 2px 2px 0rem 0rem;
-  background-image: url("../assets/paisaje.svg");
-  background-size: cover;
-  height: 200px;
-  position: relative;
-}
-
-.card {
-  border-radius: 0;
-  position: relative;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 255, 255, 0.1);
-}
-
-.pokemon-image {
-  position: relative;
-  max-height: 100%;
-  opacity: 0.8;
-}
-
-.body {
-  text-align: left;
-  background-color: #f5f5f5;
-  border-radius: 0rem 0rem 2px 2px;
-}
-
-.card {
-  border-radius: 2px 2px 0rem 0rem;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.detail-label {
-  border-bottom: 1px solid gray;
-}
-
-.body {
-  padding: 20px;
-}
-
-.pokemon-details {
-  color: #5e5e5e;
-}
-
-.details-item {
-  margin: 10px 0;
-  border-bottom: 1px solid #e8e8e8;
-  padding-bottom: 20px;
-}
-
-.details-item:last-child {
-  margin-bottom: 0;
-}
-
-.details-item span {
-  font-weight: bold;
-  color: #5e5e5e;
-}
-
-.bottom-section {
-  align-items: end;
-  display: flex;
-}
-
-.button {
-  font-family: Lato;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 22px;
-  letter-spacing: 0em;
-  text-align: center;
-  background-color: red !important;
-  color: white;
-  border-radius: 60px;
-  margin-top: 20px;
-  padding: 11px, 20px, 11px, 20px;
-}
-
-.close-btn {
-  width: 26px;
-  height: 26px;
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 1;
-}
-
-@media (min-width: 1024px) {
-  .dialog {
-    width: 570px;
-    height: 506px;
-    position: relative;
-    top: 0px;
-    left: 0px;
-  }
-
-  .bottom-section {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-</style>

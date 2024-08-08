@@ -29,8 +29,7 @@ export const useGetPokemons = () => {
     };
   };
   const pokemonDetail = async (name) => {
-    console.log("pokemonDetail", name);
-    store.reset(); // Resetea el estado antes de buscar nuevos detalles
+    store.reset();
     const pokemonData = store.allPokemons.find(
       (pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()
     );

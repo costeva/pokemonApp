@@ -41,7 +41,7 @@ export const usePokemonStore = defineStore("pokemon", {
         }
 
         this.allPokemons.push(...response.data.results);
-        this.offset += this.limit; // Incrementar el offset para la próxima carga
+        this.offset += this.limit;
       } catch (error) {
         this.error = error.message;
       } finally {
@@ -50,7 +50,6 @@ export const usePokemonStore = defineStore("pokemon", {
     },
 
     async loadPokemonDetails(url) {
-      console.log("loadPokemonDetails", url);
       this.setLoading(true);
       try {
         const response = await axios.get(url);
@@ -63,7 +62,6 @@ export const usePokemonStore = defineStore("pokemon", {
         this.error = error.message;
       } finally {
         this.setLoading(false);
-        console.log("loadPokemonDetails", this.pokemonData);
       }
     },
   },
@@ -77,8 +75,11 @@ export const usePokemonStore = defineStore("pokemon", {
     },
 
     getPokemonDetails(state) {
-      console.log("getPokemonDetailsSTORE", state.pokemonData);
       return state.pokemonData;
+    },
+
+    getFavorites(state) {
+      return state.favorites;
     },
   },
 });
