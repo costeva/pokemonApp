@@ -21,7 +21,7 @@
               <span>Weight:</span> {{ pokemon?.weight }}kg
             </div>
             <div class="details-item">
-              <span>Types:</span> {{ pokemon?.types }}
+              <span>Types:</span> {{ pokemon?.types.join(", ") }}
             </div>
           </div>
           <div class="bottom-section">
@@ -40,6 +40,7 @@
 import { defineProps, defineEmits, computed, watch } from "vue";
 import activeIcon from "../assets/Active.svg";
 import disabledIcon from "../assets/Disabled.svg";
+
 const props = defineProps({
   pokemon: {
     type: Object,
@@ -51,7 +52,7 @@ const props = defineProps({
     required: true,
   },
   isFavorite: {
-    type: Boolean,   
+    type: Boolean,
   },
 });
 
@@ -59,16 +60,15 @@ const emit = defineEmits(["update:showModal"]);
 
 const closeModal = () => {
   emit("update:showModal", false);
-
 };
 
-  watch(
-    () => props.pokemon,
-    (newVal, oldVal) => {
-      props.pokemon = newVal;
-    },
-    { immediate: true },
-  )
+watch(
+  () => props.pokemon,
+  (newVal) => {
+    props.pokemon = newVal;
+  },
+  { immediate: true }
+);
 
 const favoriteIcon = computed(() => {
   return props.isFavorite ? activeIcon : disabledIcon;
@@ -81,15 +81,10 @@ const sharePk = () => {
   const pokemonData = `${props.pokemon.name}, ${props.pokemon.weight}kg, ${types}`;
   navigator.clipboard.writeText(pokemonData);
 };
-
-
-
-
 </script>
 
 <style scoped>
 .modal {
-  
   position: fixed;
   top: 0;
   left: 0;
@@ -110,8 +105,7 @@ const sharePk = () => {
 }
 
 .card {
-
-  border-radius:0;
+  border-radius: 0;
   position: relative;
   top: 0;
   left: 0;
@@ -132,12 +126,12 @@ const sharePk = () => {
 .body {
   text-align: left;
   background-color: #f5f5f5;
-  border-radius:  0rem 0rem 2px 2px;
+  border-radius: 0rem 0rem 2px 2px;
 }
 
 .card {
   border-radius: 2px 2px 0rem 0rem;
- 
+
   position: absolute;
   top: 0;
   left: 0;
@@ -162,7 +156,7 @@ const sharePk = () => {
 
 .details-item {
   margin: 10px 0;
-  border-bottom: 1px solid #E8E8E8;
+  border-bottom: 1px solid #e8e8e8;
   padding-bottom: 20px;
 }
 
@@ -172,9 +166,8 @@ const sharePk = () => {
 
 .details-item span {
   font-weight: bold;
-  color: #5E5E5E;
+  color: #5e5e5e;
 }
-
 
 .bottom-section {
   align-items: end;
@@ -219,7 +212,7 @@ const sharePk = () => {
     left: 0px;
   }
 
-  .bottom-section{
+  .bottom-section {
     display: flex;
     justify-content: space-between;
   }

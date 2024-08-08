@@ -1,26 +1,19 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+
 export const usePokemonStore = defineStore("pokemon", {
   state: () => ({
     loading: false,
-    item: [],
-    names: [],
+    pokemonData: null,
+    items: [],
     error: null,
     favorites: [],
+    offset: 0,
+    limit: 20,
+    allPokemons: [],
   }),
 
   actions: {
-    setCleanLading() {
-      this.loading = false;
-    },
-
-    setCleanPokemon() {
-      this.item = [];
-    },
-
-    setDetallePokemon(name) {
-      this.item = name;
-    },
     setLoading(loading) {
       this.loading = loading;
     },
@@ -28,79 +21,64 @@ export const usePokemonStore = defineStore("pokemon", {
     setFavorites(name) {
       this.favorites = name;
     },
+
     removeFavorite(name) {
       this.favorites = this.favorites.filter((favorite) => favorite !== name);
     },
 
-    async pokemon(name) {
-      let pokemonName = name.toLowerCase();
+    reset() {
+      this.pokemonData = null;
+    },
+
+    async loadPokemons() {
+      this.setLoading(true);
       try {
         const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+          `https://pokeapi.co/api/v2/pokemon?limit=${this.limit}&offset=${this.offset}`
         );
         if (response.status !== 200) {
           throw new Error("Error al obtener los datos");
         }
-        this.item = response.data;
+
+        this.allPokemons.push(...response.data.results);
+        this.offset += this.limit; // Incrementar el offset para la próxima carga
       } catch (error) {
         this.error = error.message;
       } finally {
+        this.setLoading(false);
       }
     },
 
-    async pokemonsList() {
+    async loadPokemonDetails(url) {
+      console.log("loadPokemonDetails", url);
+      this.setLoading(true);
       try {
-        const requests = [];
-        for (let i = 1; i <= 151; i++) {
-          requests.push(axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`));
+        const response = await axios.get(url);
+        if (response.status !== 200) {
+          throw new Error("Error al obtener los datos");
         }
-
-        const responses = await Promise.all(requests);
-
-        responses.forEach((response) => {
-          if (response.status !== 200) {
-            throw new Error("Error al obtener los datos");
-          }
-          this.names.push(response.data.name);
-        });
+        this.pokemonData = response.data;
+        this.items.push(response.data);
       } catch (error) {
         this.error = error.message;
       } finally {
-        this.loading = true;
+        this.setLoading(false);
+        console.log("loadPokemonDetails", this.pokemonData);
       }
     },
   },
 
   getters: {
-    getNames(state) {
-      return state?.names.map(
-        (name) => name.charAt(0).toUpperCase() + name.slice(1)
+    getPokemonNames(state) {
+      return state.allPokemons.map(
+        (pokemon) =>
+          pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
       );
     },
 
-    getFavorites(state) {
-      return state.favorites;
-    },
-    getPokemon(state) {
-      const item = state?.item;
-      if (!item) {
-        return null;
-      }
-
-      const types = Array.isArray(item.types)
-        ? item.types.map((type) => type?.type?.name).join(", ")
-        : "";
-
-      const name = item?.name
-        ? item.name.charAt(0).toUpperCase() + item.name.slice(1)
-        : "";
-      return {
-        name: name,
-        id: item.id,
-        image: item.sprites?.other?.["official-artwork"]?.front_default,
-        types: types,
-        weight: item.weight,
-      };
+    getPokemonDetails(state) {
+      console.log("getPokemonDetailsSTORE", state.pokemonData);
+      return state.pokemonData;
     },
   },
 });

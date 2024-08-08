@@ -35,7 +35,7 @@ const toggleFavorite = () => {
 };
 
 const openCard = () => {
-  emit("open-card", { pokemon: pokemonName, isFavorite: isFavorite.value});
+  emit("open-card", { pokemon: pokemonName, isFavorite: isFavorite.value });
 };
 
 const favoriteIcon = computed(() => {

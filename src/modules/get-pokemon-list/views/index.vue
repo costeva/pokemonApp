@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, inject } from "vue";
+import { onMounted, onBeforeUnmount, ref, computed, inject } from "vue";
 import { useGetPokemons } from "../composable/index.js";
 import listPokemons from "../../../components/list.vue";
 import loaderPokemon from "../../../components/loader/loader.vue";
@@ -67,15 +67,17 @@ const showModal = ref(false);
 const isFavorite = ref(false);
 
 const filteredPokemons = computed(() => {
-  const serchTxt = searchTerm.value.toLowerCase();
+  const searchTxt = searchTerm.value.toLowerCase();
   let filterName = pokemons.value.filter((pokemon) => {
-    return pokemon.toLowerCase().includes(serchTxt);
+    return pokemon.toLowerCase().includes(searchTxt);
   });
   showFooter.value = filterName.length !== 0;
   return filterName;
 });
 
 const handleOpenCard = (data) => {
+  console.log(data.pokemon, "data");
+  console.log(data, "DATA");
   isFavorite.value = data.isFavorite;
   pokemonDetail(data.pokemon);
   showModal.value = true;
@@ -86,9 +88,26 @@ const handleCloseCard = () => {
   resetCard();
 };
 
+const handleScroll = () => {
+  const bottomOfWindow =
+    document.documentElement.scrollTop + window.innerHeight >=
+    document.documentElement.offsetHeight - 10;
+
+  if (bottomOfWindow && !isLoading.value) {
+    getPokemonsList();
+  }
+};
+
 onMounted(async () => {
+  window.addEventListener("scroll", handleScroll);
   await getPokemonsList();
 });
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
+
+console.log(pokemon, "pokemon");
 </script>
 
 <style scoped>
@@ -122,14 +141,13 @@ onMounted(async () => {
   margin-top: 20px;
 }
 
-.input-group{
+.input-group {
   width: 100% !important;
 }
 .input-group-text {
   background: #ffffff;
   border-right: #ffffff;
 }
-
 
 .input-search {
   flex-wrap: nowrap;
@@ -138,14 +156,14 @@ onMounted(async () => {
   border-left: #ffffff;
 }
 @media (min-width: 1024px) {
-.input-group-text {
-  background: #ffffff;
-  border-right: #ffffff;
-}
-.input-search {
-  padding: 14px 219px 14px 15px;
-  border-radius: 5px;
-  border-left: #ffffff;
-}
+  .input-group-text {
+    background: #ffffff;
+    border-right: #ffffff;
+  }
+  .input-search {
+    padding: 14px 219px 14px 15px;
+    border-radius: 5px;
+    border-left: #ffffff;
+  }
 }
 </style>
