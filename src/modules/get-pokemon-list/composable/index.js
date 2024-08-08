@@ -7,9 +7,9 @@ export const useGetPokemons = () => {
   const { isLoading, startLoader, stopLoader } = useLoader();
   const favoritePokemon = ref([]);
   const pokemons = computed(() => store.getPokemonNames);
-  const pokemon = ref(null);
+  const pokemon = ref({});
   const searchTerm = ref("");
-
+  const modalLoading = ref(false);
   const getPokemonsList = async () => {
     try {
       startLoader();
@@ -42,8 +42,8 @@ export const useGetPokemons = () => {
   };
 
   const resetCard = () => {
-    pokemon.value = null;
-    store.reset(); // Resetea el estado cuando se resetea la tarjeta
+    pokemon.value = {};
+    store.reset();
   };
   const toggleFavorite = (pokemonName) => {
     const index = favoritePokemon.value.indexOf(pokemonName);
@@ -63,6 +63,7 @@ export const useGetPokemons = () => {
   return {
     pokemons,
     searchTerm,
+    modalLoading,
     pokemonDetail,
     getPokemonsList,
     isLoading,

@@ -15,7 +15,7 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 import Footer from "./components/Footer.vue";
 import { usePokemonStore } from "./modules/store/index.js";
-
+import loaderPokemon from "./components/loader/loader.vue";
 const router = useRouter();
 const currentRoute = computed(() => router.currentRoute.value.path);
 
