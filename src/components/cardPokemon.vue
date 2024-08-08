@@ -1,5 +1,10 @@
 <template>
-  <div class="modal" v-show="props.showModal" tabindex="-1">
+  <div
+    class="modal"
+    v-show="props.showModal"
+    tabindex="-1"
+    @click.self="closeModal"
+  >
     <div class="dialog">
       <div class="content">
         <div class="header">
@@ -98,7 +103,7 @@ const sharePk = () => {
   const pokemonData = `${props.pokemon.name}, ${props.pokemon.weight}kg, ${types}`;
   navigator.clipboard.writeText(pokemonData).then(() => {
     const toastEl = document.getElementById("liveToast");
-    const toast = new Toast(toastEl); // Utiliza Toast directamente
+    const toast = new Toast(toastEl);
     toast.show();
   });
 };
